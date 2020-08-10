@@ -7,6 +7,7 @@ using UnityEngine;
 public class Hacker : MonoBehaviour
 {
     int level;
+    string[] passwords = { "donkey", "reference", "neuroscience" };
     string password;
     enum Screen { MainMenu, Password, Win };
     Screen currentScreen;
@@ -34,9 +35,9 @@ public class Hacker : MonoBehaviour
         {
             currentScreen = Screen.Password;
             level = int.Parse(input);
+            password = passwords[level-1];
             Terminal.WriteLine("You have chosen level " + level + "\nPlease enter the password: ");
         }
-        else if (input.Length == 4) Terminal.WriteLine("Not your credit card password fool");
         else Terminal.WriteLine("Please choose a valid input");
     }
 
@@ -44,6 +45,7 @@ public class Hacker : MonoBehaviour
     {
         if (input == "menu")
         {
+            currentScreen = Screen.MainMenu;
             showMainMenu();
         }
         if (currentScreen == Screen.MainMenu)
@@ -52,7 +54,7 @@ public class Hacker : MonoBehaviour
         }
         else if (currentScreen == Screen.Password)
         {
-            startGame(input);
+            checkPassword(input);
         }
     }
 
@@ -61,15 +63,11 @@ public class Hacker : MonoBehaviour
         Terminal.WriteLine("WELL DONE! YOU'RE MONKAS");
     }
 
-    void startGame(string input)
-    {
-        checkPassword(input);
-    }
-
     void checkPassword(string input)
     {
         if (input == password)
         {
+            currentScreen = Screen.Win;
             winScreen();
         }
         else
